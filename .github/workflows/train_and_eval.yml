@@ -33,6 +33,12 @@ jobs:
         run: |
           python train.py
 
+      - name: Upload model artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: model
+          path: mlp_model.joblib
+
   evaluate:
     if: ${{ github.event.inputs.run_eval == 'yes' }}
     runs-on: ubuntu-latest
@@ -49,6 +55,11 @@ jobs:
       - name: Install dependencies
         run: |
           pip install datasets scikit-learn joblib pandas
+
+      - name: Download model artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: model
 
       - name: Run evaluation
         run: |
